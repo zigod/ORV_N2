@@ -39,3 +39,8 @@ def my_sobel(slika):
     #slika_robov*=3
     
     return slika_robov
+
+def canny(slika, sp_prag, zg_prag):
+    slika_robov = cv2.Canny(slika, sp_prag, zg_prag)
+    slika_robov = cv2.cvtColor(slika_robov, cv2.COLOR_BGR2RGB)
+    return slika_robov 
