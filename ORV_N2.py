@@ -52,3 +52,20 @@ def spremeni_kontrast(slika, alfa, beta):
             slika[i, j] = alfa * slika[i, j] + beta
     return slika
 
+fig = plt.figure(figsize =(10, 7))
+rows = 2
+columns = 4
+
+bgr_slika = cv2.imread('image.jpg',0)
+slika = cv2.cvtColor(bgr_slika, cv2.COLOR_BGR2RGB)
+
+global roberts_slika
+roberts_slika = my_roberts(slika)
+prewitt_slika = my_prewitt(slika)
+sobel_slika = my_prewitt(slika)
+canny_slika = canny(slika, 100, 200)
+
+cv2.imwrite('Roberts.jpg', roberts_slika)
+cv2.imwrite('Prewitt.jpg', prewitt_slika)
+cv2.imwrite('Sobel.jpg', sobel_slika)
+cv2.imwrite('Canny.jpg', canny_slika)
