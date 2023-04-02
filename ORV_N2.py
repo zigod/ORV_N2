@@ -99,7 +99,9 @@ plt.title("Originalna slika")
 
 fig.subplots_adjust(left=0.25, bottom=0.25)
 
-axfreq = fig.add_axes([0.25, 0.1, 0.65, 0.03])
+fig2 = plt.figure(figsize =(10, 7))
+
+axfreq = fig2.add_axes([0.25, 0.1, 0.65, 0.03])
 contrast_slider = Slider(
     ax=axfreq,
     label='Kontrast (alfa)',
@@ -109,7 +111,7 @@ contrast_slider = Slider(
 )
 
 # Make a vertically oriented slider to control the amplitude
-axamp = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
+axamp = fig2.add_axes([0.1, 0.25, 0.0225, 0.63])
 brightness_slider = Slider(
     ax=axamp,
     label="Svetlost (beta)",
@@ -118,3 +120,51 @@ brightness_slider = Slider(
     valinit=0,
     orientation="vertical"
 )
+
+
+def update(val):
+    bgr_slika = cv2.imread('image.jpg',0)
+    slika = cv2.cvtColor(bgr_slika, cv2.COLOR_BGR2RGB)
+    slika = spremeni_kontrast(slika, contrast_slider.val, brightness_slider.val)
+
+    roberts_slika = my_roberts(slika)
+    prewitt_slika = my_prewitt(slika)
+    sobel_slika = my_prewitt(slika)
+    canny_slika = canny(slika, 100, 200)
+
+    fig.clear()
+
+    
+
+    fig.add_subplot(rows, columns, 1)
+    plt.imshow(roberts_slika)
+    plt.axis('off')
+    plt.title("Roberts slika")
+
+    fig.add_subplot(rows, columns, 2)
+    plt.imshow(prewitt_slika)
+    plt.axis('off')
+    plt.title("Prewitt slika")
+
+    fig.add_subplot(rows, columns, 5)
+    plt.imshow(sobel_slika)
+    plt.axis('off')
+    plt.title("Sobel slika")
+
+    fig.add_subplot(rows, columns, 6)
+    plt.imshow(canny_slika)
+    plt.axis('off')
+    plt.title("Canny slika")
+
+    fig.add_subplot(rows, columns, (3, 8))
+    plt.imshow(slika)
+    plt.axis('off')
+    plt.title("Originalna slika")
+
+    fig.canvas.draw()
+
+contrast_slider.on_changed(update)
+brightness_slider.on_changed(update)
+
+
+plt.show()
