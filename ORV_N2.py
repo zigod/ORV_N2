@@ -96,3 +96,25 @@ fig.add_subplot(rows, columns, (3, 8))
 plt.imshow(slika)
 plt.axis('off')
 plt.title("Originalna slika")
+
+fig.subplots_adjust(left=0.25, bottom=0.25)
+
+axfreq = fig.add_axes([0.25, 0.1, 0.65, 0.03])
+contrast_slider = Slider(
+    ax=axfreq,
+    label='Kontrast (alfa)',
+    valmin=0.1,
+    valmax=30,
+    valinit=0,
+)
+
+# Make a vertically oriented slider to control the amplitude
+axamp = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
+brightness_slider = Slider(
+    ax=axamp,
+    label="Svetlost (beta)",
+    valmin=0,
+    valmax=10,
+    valinit=0,
+    orientation="vertical"
+)
