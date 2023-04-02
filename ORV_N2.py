@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.widgets import Slider, Button
-#plt.ion()
+from tkinter import *
 
 def my_roberts(slika):
     kernelv = np.array( [[1, 0 ], [0,-1 ]] )
@@ -56,86 +56,33 @@ fig = plt.figure(figsize =(10, 7))
 rows = 2
 columns = 4
 
-bgr_slika = cv2.imread('image.jpg',0)
-slika = cv2.cvtColor(bgr_slika, cv2.COLOR_BGR2RGB)
+master = Tk()
+def Close():
+    contrastValue = contrast.get()
+    contrastValue = contrastValue/100
+    brightnessValue = brightness.get()
+    brightnessValue = brightnessValue/10
 
-global roberts_slika
-roberts_slika = my_roberts(slika)
-prewitt_slika = my_prewitt(slika)
-sobel_slika = my_prewitt(slika)
-canny_slika = canny(slika, 100, 200)
-
-cv2.imwrite('Roberts.jpg', roberts_slika)
-cv2.imwrite('Prewitt.jpg', prewitt_slika)
-cv2.imwrite('Sobel.jpg', sobel_slika)
-cv2.imwrite('Canny.jpg', canny_slika)
-
-#1 2 3 4
-#5 6 7 8
-fig.add_subplot(rows, columns, 1)
-plt.imshow(roberts_slika)
-plt.axis('off')
-plt.title("Roberts slika")
-
-fig.add_subplot(rows, columns, 2)
-plt.imshow(prewitt_slika)
-plt.axis('off')
-plt.title("Prewitt slika")
-
-fig.add_subplot(rows, columns, 5)
-plt.imshow(sobel_slika)
-plt.axis('off')
-plt.title("Sobel slika")
-
-fig.add_subplot(rows, columns, 6)
-plt.imshow(canny_slika)
-plt.axis('off')
-plt.title("Canny slika")
-
-fig.add_subplot(rows, columns, (3, 8))
-plt.imshow(slika)
-plt.axis('off')
-plt.title("Originalna slika")
-
-fig.subplots_adjust(left=0.25, bottom=0.25)
-
-fig2 = plt.figure(figsize =(10, 7))
-
-axfreq = fig2.add_axes([0.25, 0.1, 0.65, 0.03])
-contrast_slider = Slider(
-    ax=axfreq,
-    label='Kontrast (alfa)',
-    valmin=0.1,
-    valmax=30,
-    valinit=0,
-)
-
-# Make a vertically oriented slider to control the amplitude
-axamp = fig2.add_axes([0.1, 0.25, 0.0225, 0.63])
-brightness_slider = Slider(
-    ax=axamp,
-    label="Svetlost (beta)",
-    valmin=0,
-    valmax=10,
-    valinit=0,
-    orientation="vertical"
-)
-
-
-def update(val):
+    
     bgr_slika = cv2.imread('image.jpg',0)
     slika = cv2.cvtColor(bgr_slika, cv2.COLOR_BGR2RGB)
-    slika = spremeni_kontrast(slika, contrast_slider.val, brightness_slider.val)
+    slika = cv2.GaussianBlur(slika, (5,5), 0)
+    print("lmao " , contrastValue, " haha " , brightnessValue)
+    slika = spremeni_kontrast(slika, contrastValue, brightnessValue)
+
 
     roberts_slika = my_roberts(slika)
     prewitt_slika = my_prewitt(slika)
     sobel_slika = my_prewitt(slika)
     canny_slika = canny(slika, 100, 200)
 
-    fig.clear()
+    cv2.imwrite('Roberts.jpg', roberts_slika)
+    cv2.imwrite('Prewitt.jpg', prewitt_slika)
+    cv2.imwrite('Sobel.jpg', sobel_slika)
+    cv2.imwrite('Canny.jpg', canny_slika)
 
-    
-
+    #1 2 3 4
+    #5 6 7 8
     fig.add_subplot(rows, columns, 1)
     plt.imshow(roberts_slika)
     plt.axis('off')
@@ -161,10 +108,16 @@ def update(val):
     plt.axis('off')
     plt.title("Originalna slika")
 
-    fig.canvas.draw()
+    plt.show()
 
-contrast_slider.on_changed(update)
-brightness_slider.on_changed(update)
+# Button for closing
+exit_button = Button(master, text="Submit", command=Close)
+exit_button.pack(pady=20)
 
 
-plt.show()
+
+contrast = Scale(master, from_=-300, to=300, orient=HORIZONTAL)
+contrast.pack()
+brightness = Scale(master, from_=-100, to=100, orient=HORIZONTAL)
+brightness.pack()
+mainloop()
