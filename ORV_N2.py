@@ -44,3 +44,11 @@ def canny(slika, sp_prag, zg_prag):
     slika_robov = cv2.Canny(slika, sp_prag, zg_prag)
     slika_robov = cv2.cvtColor(slika_robov, cv2.COLOR_BGR2RGB)
     return slika_robov 
+
+def spremeni_kontrast(slika, alfa, beta):
+    x, y, _ = slika.shape
+    for i in range(0, x, 1):
+        for j in range(0, y, 1):
+            slika[i, j] = alfa * slika[i, j] + beta
+    return slika
+
