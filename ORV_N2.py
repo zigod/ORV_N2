@@ -69,3 +69,30 @@ cv2.imwrite('Roberts.jpg', roberts_slika)
 cv2.imwrite('Prewitt.jpg', prewitt_slika)
 cv2.imwrite('Sobel.jpg', sobel_slika)
 cv2.imwrite('Canny.jpg', canny_slika)
+
+#1 2 3 4
+#5 6 7 8
+fig.add_subplot(rows, columns, 1)
+plt.imshow(roberts_slika)
+plt.axis('off')
+plt.title("Roberts slika")
+
+fig.add_subplot(rows, columns, 2)
+plt.imshow(prewitt_slika)
+plt.axis('off')
+plt.title("Prewitt slika")
+
+fig.add_subplot(rows, columns, 5)
+plt.imshow(sobel_slika)
+plt.axis('off')
+plt.title("Sobel slika")
+
+fig.add_subplot(rows, columns, 6)
+plt.imshow(canny_slika)
+plt.axis('off')
+plt.title("Canny slika")
+
+fig.add_subplot(rows, columns, (3, 8))
+plt.imshow(slika)
+plt.axis('off')
+plt.title("Originalna slika")
